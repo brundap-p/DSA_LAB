@@ -1,0 +1,199 @@
+class Node:
+    __slots__ = ['data', 'next']
+
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    __slots__ = ['head']
+
+    def __init__(self):
+        self.head = None
+
+    def is_empty(self):
+        return self.head is None
+
+    def insert_at_end(self, data):
+        if not data or str(data).strip() == "":
+            print("Empty input is not allowed.")
+            return
+
+        if self.search(data, suppress_print=True):
+            print("Duplicates are not allowed.")
+            return
+
+        new_node = Node(data)
+        if self.is_empty():
+            self.head = new_node
+            print(f"'{data}' inserted at the beginning.")
+            return
+
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
+        print(f"'{data}' inserted at the end.")
+
+    def delete_at_beginning(self):
+        if self.is_empty():
+            print("Linked List is empty.")
+            return
+
+        deleted_data = self.head.data
+        self.head = self.head.next
+        print(f"'{deleted_data}' deleted from the beginning.")
+
+    def delete_at_end(self):
+        if self.is_empty():
+            print("Linked List is empty.")
+            return
+
+        if self.head.next is None:
+            deleted_data = self.head.data
+            self.head = None
+            print(f"'{deleted_data}' deleted from the end ")
+            return
+
+        current = self.head
+        prev = None
+        while current.next:
+            prev = current
+            current = current.next
+
+        deleted_data = current.data
+        prev.next = None
+        print(f"'{deleted_data}' deleted from the end.")
+
+    def delete_at_position(self, position):
+        if position < 0:
+            print("Invalid position.")
+            return
+
+        if position == 0:
+            self.delete_at_beginning()
+            return
+
+        current = self.head
+        prev = None
+        count = 0
+
+        while current and count < position:
+            prev = current
+            current = current.next
+            count += 1
+
+        if current is None:
+            print(f"Position {position} is out of bounds.")
+            return
+
+        deleted_data = current.data
+        prev.next = current.next
+        print(f"'{deleted_data}' deleted from the list")
+
+    def delete_by_value(self, value):
+        if self.is_empty():
+            print("Linked List is empty.")
+            return
+
+        if self.head.data == value:
+            self.delete_at_beginning()
+            return
+
+        current = self.head
+        prev = None
+        found = False
+
+        while current:
+            if current.data == value:
+                prev.next = current.next
+                print(f"'{value}' deleted from the list.")
+                found = True
+                return
+            prev = current
+            current = current.next
+
+        if not found:
+            print(f"'{value}' not found in the linked list.")
+
+    def search(self, value, suppress_print=False):
+        if self.is_empty():
+            if not suppress_print:
+                print("Linked List is empty.")
+            return False
+
+        current = self.head
+        position = 0
+        while current:
+            if current.data == value:
+                if not suppress_print:
+                    print(f"'{value}' found at position {position}.")
+                return True
+            current = current.next
+            position += 1
+
+        if not suppress_print:
+            print(f"'{value}' not found in the linked list.")
+        return False
+
+    def display(self):
+        if self.is_empty():
+            print("Linked List is empty.")
+            return
+
+        elements = []
+        current = self.head
+        while current:
+            elements.append(str(current.data))
+            current = current.next
+        print("Linked List: " + " ---> ".join(elements),"---> \u03c6")
+
+def print_menu():
+    print("\n--- Linked List Operations Menu ---")
+    print("1. Insert at End")
+    print("2. Delete at Beginning")
+    print("3. Delete at End")
+    print("4. Delete at Position")
+    print("5. Delete by Value")
+    print("6. Search")
+    print("7. Display")
+    print("8. Exit")
+    print("-----------------------------------")
+
+def main():
+    linked_list = LinkedList()
+
+    while True:
+        print_menu()
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            try:
+                data = input("Enter data to insert: ")
+                linked_list.insert_at_end(data)
+            except Exception as e:
+                print(f"An error occurred: {e}")
+        elif choice == '2':
+            linked_list.delete_at_beginning()
+        elif choice == '3':
+            linked_list.delete_at_end()
+        elif choice == '4':
+            try:
+                position = int(input("Enter position to delete (0-indexed): "))
+                linked_list.delete_at_position(position)
+            except ValueError:
+                print("Invalid input. Please enter a number for the position.")
+        elif choice == '5':
+            value = input("Enter value to delete: ")
+            linked_list.delete_by_value(value)
+        elif choice == '6':
+            value = input("Enter value to search: ")
+            linked_list.search(value)
+        elif choice == '7':
+            linked_list.display()
+        elif choice == '8':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice.")
+main()

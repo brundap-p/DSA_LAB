@@ -1,0 +1,85 @@
+def push(stack, item):
+    """Adds an item to the top of the stack."""
+    stack.append(item)
+    print(f"'{item}' pushed onto the stack.")
+
+def pop(stack):
+    """Removes and returns the item at the top of the stack."""
+    if not is_empty(stack):
+        item = stack.pop()
+        print(f"'{item}' popped from the stack.")
+        return item
+    else:
+        print("Cannot pop.")
+        return None
+
+def top(stack):
+    """Returns the item at the top of the stack without removing it."""
+    if not is_empty(stack):
+        print(f"Top of the stack: '{stack[-1]}'")
+        return stack[-1]
+    else:
+        print("Stack is empty. No top element.")
+        return None
+
+def is_empty(stack):
+    """Checks if the stack is empty."""
+    return len(stack) == 0
+
+def length(stack):
+    """Returns the number of items in the stack."""
+    print(f"Length of the stack: {len(stack)}")
+    return len(stack)
+
+def display_stack(stack):
+    """Displays the current state of the stack."""
+    if not stack:
+        print("Stack is empty.")
+    else:
+        print("Current stack (top to bottom):")
+        for item in reversed(stack):
+            print(f" {item}")
+
+def main():
+    """Main function to run the stack operations menu."""
+    string_stack = []
+
+    while True:
+        print("\nStack Operations Menu:")
+        print("1. Push")
+        print("2. Pop")
+        print("3. Top")
+        print("4. Is Empty")
+        print("5. Length")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-7): ")
+
+        if choice == '1':
+            item = input("Enter the string to push: ")
+            if item:  # Check if the input string is not empty
+                push(string_stack, item)
+                display_stack(string_stack)
+            else:
+                print("Empty input not accepted")
+                display_stack(string_stack)
+        elif choice == '2':
+            pop(string_stack)
+            display_stack(string_stack)
+        elif choice == '3':
+            top(string_stack)
+        elif choice == '4':
+            if is_empty(string_stack):
+                print("Stack is empty.")
+            else:
+                print("Stack is not empty.")
+        elif choice == '5':
+            length(string_stack)
+            display_stack(string_stack)
+        elif choice == '6':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 7.")
+
+main()

@@ -1,0 +1,89 @@
+from collections import deque
+
+def enqueue(dq, item):
+    """Adds an item to the rear of the deque."""
+    dq.append(item)
+
+def dequeue(dq):
+    """Removes and returns the item from the front of the deque.
+    Returns None if the deque is empty.
+    """
+    if not is_empty(dq):
+        return dq.popleft()
+    else:
+        return None
+
+def front(dq):
+    """Returns the item at the front of the deque without removing it.
+    Returns None if the deque is empty.
+    """
+    if not is_empty(dq):
+        return dq[0]
+    else:
+        return None
+
+def is_empty(dq):
+    """Checks if the deque is empty."""
+    return len(dq) == 0
+
+def length(dq):
+    """Returns the number of items in the deque."""
+    return len(dq)
+
+def display_queue(dq):
+    """Displays the elements in the deque."""
+    if not dq:
+        print("Queue is empty.")
+    else:
+        print("Queue:", list(dq))
+
+def main():
+    """Main function to run the queue operations program."""
+    string_deque = deque()
+
+    while True:
+        print("\nQueue Operations (String Deque):")
+        print("1. Enqueue (Add to rear)")
+        print("2. Dequeue (Remove from front)")
+        print("3. Front (View front element)")
+        print("4. Is Empty")
+        print("5. Length")
+        print("6. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            item = input("Enter the string to enqueue: ")
+            if item:
+                enqueue(string_deque, item)
+                display_queue(string_deque)
+            else:
+                print("Input cannot be empty.")
+        elif choice == '2':
+            dequeued_item = dequeue(string_deque)
+            if dequeued_item is not None:
+                print(f"Dequeued item: {dequeued_item}")
+            else:
+                print("cannot dequeue.")
+            display_queue(string_deque)
+        elif choice == '3':
+            front_item = front(string_deque)
+            if front_item is not None:
+                print(f"Front element: {front_item}")
+            else:
+                print("Queue is empty")
+        elif choice == '4':
+            if is_empty(string_deque):
+                print("Queue is empty.")
+            else:
+                print("Queue is not empty.")
+        elif choice == '5':
+            print(f"Length of the queue: {length(string_deque)}")
+            display_queue(string_deque)
+        elif choice == '6':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+main()

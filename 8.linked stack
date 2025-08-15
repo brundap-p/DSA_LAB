@@ -1,0 +1,99 @@
+class Node:
+    __slots__ = ['data', 'next']
+
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Stack:
+    __slots__ = ['top_node', 'size']
+
+    def __init__(self):
+        self.top_node = None
+        self.size = 0
+
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top_node
+        self.top_node = new_node
+        self.size += 1
+        print(f"{data} pushed to stack.")
+        self.display()
+
+    def pop(self):
+        if self.is_empty():
+            print("Stack is empty. Cannot pop.")
+            return
+        popped = self.top_node.data
+        self.top_node = self.top_node.next
+        self.size -= 1
+        print(f"Popped element: {popped}")
+        self.display()
+
+    def is_empty(self):
+        return self.top_node is None
+
+    def length(self):
+        return self.size
+
+    def top(self):
+        if self.is_empty():
+            print("Stack is empty.")
+        else:
+            print(f"Top element: {self.top_node.data}")
+
+    def display(self):
+        if self.is_empty():
+            print("Stack is empty.")
+            return
+        elements = []
+        current = self.top_node
+        while current:
+            elements.append(str(current.data))
+            current = current.next
+        elements = elements[::-1]  # Reverse for right-side top visual
+        print("Linked List: " + " ---> ".join(elements) + " ---> \u03c6")
+
+def main ():
+    stack = Stack()
+    while True:
+        print("\nStack Operations Menu:")
+        print("1. Push")
+        print("2. Pop")
+        print("3. Check if Empty")
+        print("4. Stack Length")
+        print("5. Top Element")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ").strip()
+
+        if choice == '1':
+            value = input("Enter value to push: ").strip()
+            if value == "":
+                print("Cannot push empty value. Please enter a valid input.")
+            else:
+                stack.push(value)
+
+        elif choice == '2':
+            stack.pop()
+
+        elif choice == '3':
+            if stack.is_empty():
+                print("Stack is empty.")
+            else:
+                print("Stack is not empty.")
+
+        elif choice == '4':
+            print(f"Stack length: {stack.length()}")
+
+        elif choice == '5':
+            stack.top()
+
+        elif choice == '6':
+            print("Exiting program.")
+            break
+
+        else:
+            print("Invalid choice. Please enter a number between 1 and 6.")
+
+main()

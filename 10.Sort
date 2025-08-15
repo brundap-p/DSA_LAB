@@ -1,0 +1,120 @@
+def bubble_sort(data, ascending=True):
+    n = len(data)
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if (data[j] > data[j + 1]) if ascending else (data[j] < data[j + 1]):
+                data[j], data[j + 1] = data[j + 1], data[j]
+                swapped = True
+        if not swapped:
+            break
+    return data
+
+def insertion_sort(data, ascending=True):
+    for i in range(1, len(data)):
+        key = data[i]
+        j = i - 1
+        while j >= 0 and ((data[j] > key) if ascending else (data[j] < key)):
+            data[j + 1] = data[j]
+            j -= 1
+        data[j + 1] = key
+    return data
+
+def selection_sort(data, ascending=True):
+    for i in range(len(data)):
+        idx = i
+        for j in range(i + 1, len(data)):
+            if (data[j] < data[idx]) if ascending else (data[j] > data[idx]):
+                idx = j
+        data[i], data[idx] = data[idx], data[i]
+    return data
+
+def get_valid_choice(prompt, valid_choices):
+    while True:
+        try:
+            choice = int(input(prompt))
+            if choice in valid_choices:
+                return choice
+            else:
+                print("Invalid choice.")
+        except ValueError:
+            print("Invalid input.")
+
+def get_sorting_choice():
+    print("\nChoose Sorting Algorithm:")
+    print("1. Bubble Sort")
+    print("2. Insertion Sort")
+    print("3. Selection Sort")
+    return get_valid_choice("Enter choice (1-4): ", [1, 2, 3, 4])
+
+def get_case_and_order_option():
+    while True:
+        print("\nChoose Case Sensitivity and Sort Order:")
+        print("1. Case Sensitive - Ascending")
+        print("2. Case Sensitive - Descending")
+        print("3. Case Insensitive - Ascending")
+        print("4. Case Insensitive - Descending")
+        print("5. Go Back to Sorting Menu")
+        print("6. Exit")
+        choice = get_valid_choice("Enter choice (1-6): ", [1, 2, 3, 4, 5, 6])
+
+        if choice == 1:
+            return 1, True
+        elif choice == 2:
+            return 1, False
+        elif choice == 3:
+            return 2, True
+        elif choice == 4:
+            return 2, False
+        elif choice == 5:
+            return None, None  # Go back
+        elif choice == 6:
+            print("Exiting program.")
+            return "exit", None
+
+def main():
+    while True:
+        raw_input_str = input("\nEnter data separated by spaces: ")
+        if raw_input_str.strip() == "":
+            print("Empty input not allowed.")
+            continue
+        data = raw_input_str.split()
+
+        while True:
+            sorting_choice = get_sorting_choice()
+
+            if sorting_choice == 4:
+                break  # Enter new data
+
+            while True:
+                case_option, ascending = get_case_and_order_option()
+                if case_option == "exit":
+                    return  # Gracefully stop main program
+                if case_option is None:
+                    print("\nReturning to sorting menu...")
+                    break  # Go back to sorting algorithm menu
+
+                current_data = list(data)
+
+                if case_option == 2:
+                    original_map = {x.lower(): x for x in current_data}
+                    current_data = [x.lower() for x in current_data]
+                else:
+                    original_map = None
+
+                if sorting_choice == 1:
+                    sorted_data = bubble_sort(current_data, ascending)
+                elif sorting_choice == 2:
+                    sorted_data = insertion_sort(current_data, ascending)
+                elif sorting_choice == 3:
+                    sorted_data = selection_sort(current_data, ascending)
+
+                if case_option == 2:
+                    final_data = [original_map[x] for x in sorted_data]
+                else:
+                    final_data = sorted_data
+
+                # FIXED: Show original text including backslashes
+                print("\nSorted Result:", " ".join(final_data))
+
+main()

@@ -1,0 +1,136 @@
+import array
+
+def insert_element(data_list, element, position):
+    if 0 <= position <= len(data_list):
+        data_list.insert(position, element)
+        print("Successfully inserted!")
+    else:
+        print("Invalid position for insertion.")
+    return data_list
+
+def search_element(data_list, element):
+    try:
+        return data_list.index(element)
+    except ValueError:
+        return -1
+
+def delete_element(data_list, element):
+    if element in data_list:
+        data_list.remove(element)
+        print("Successfully deleted!")
+    else:
+        print("Element not found for deletion.")
+    return data_list
+
+def find_minimum(data_list):
+    if data_list:
+        return min(data_list)
+    return None
+
+def find_maximum(data_list):
+    if data_list:
+        return max(data_list)
+    return None
+
+def find_successor(data_list, element):
+    try:
+        index = data_list.index(element)
+        if index < len(data_list) - 1:
+            return data_list[index + 1]
+        return None  
+    except ValueError:
+        return None
+
+def find_predecessor(data_list, element):
+    try:
+        index = data_list.index(element)
+        if index > 0:
+            return data_list[index - 1]
+        return None 
+    except ValueError:
+        return None  
+
+def display_list(data_list):
+    print(data_list)
+
+def main():
+    my_array = array.array('i')  # 'i' for integers
+
+    while True:
+        print("\n--- Array Operations Menu ---")
+        print("1. Insert ")
+        print("2. Search ")
+        print("3. Delete ")
+        print("4. Minimum")
+        print("5. Maximum")
+        print("6. Successor")
+        print("7. Predecessor")
+        print("8. Display ")
+        print("9. Exit")
+        print("---------------------------")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            try:
+                element = int(input("Enter integer element to insert: "))
+                position = int(input("Enter integer position to insert (0-indexed): "))
+                my_array = insert_element(my_array, element, position)
+            except ValueError:
+                print("Invalid input. Please enter integers only.")
+        elif choice == '2':
+            try:
+                element = int(input("Enter integer element to search: "))
+                position = search_element(my_array, element)
+                if position != -1:
+                    print(f"Element {element} found at position: {position}")
+                else:
+                    print(f"Element {element} not found.")
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+        elif choice == '3':
+            try:
+                element = int(input("Enter integer element to delete: "))
+                my_array = delete_element(my_array, element)
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+        elif choice == '4':
+            minimum_val = find_minimum(my_array)
+            if minimum_val is not None:
+                print("Minimum element:", minimum_val)
+            else:
+                print("Array is empty.")
+        elif choice == '5':
+            maximum_val = find_maximum(my_array)
+            if maximum_val is not None:
+                print("Maximum element:", maximum_val)
+            else:
+                print("Array is empty.")
+        elif choice == '6':
+            try:
+                element = int(input("Enter integer element to find successor: "))
+                successor_val = find_successor(my_array, element)
+                if successor_val is not None:
+                    print("Successor:", successor_val)
+                else:
+                    print(f"Successor for {element} not found.")
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+        elif choice == '7':
+            try:
+                element = int(input("Enter integer element to find predecessor: "))
+                predecessor_val = find_predecessor(my_array, element)
+                if predecessor_val is not None:
+                    print("Predecessor:", predecessor_val)
+                else:
+                    print(f"Predecessor for {element} not found.")
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+        elif choice == '8':
+            display_list(my_array)
+        elif choice == '9':
+            print("Exiting the program.")
+            break  
+        else:
+            print("Invalid choice")
+main()

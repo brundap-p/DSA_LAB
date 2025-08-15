@@ -1,0 +1,85 @@
+class Node:
+    __slots__ = ['data', 'left', 'right']
+
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+        self.max_level = 0
+        self.node_count = 0
+
+    def make_tree(self):
+        self.root = Node(1)
+        self.root.left = Node(2)
+        self.root.right = Node(3)
+        self.root.left.left = Node(4)
+        self.root.left.right = Node(5)
+        self.root.right.left = Node(6)
+        self.root.right.right = Node(7)
+        self.root.left.left.left = Node(8)
+
+    def count_nodes(self, node):
+        if node is None:
+            return 0
+        return 1 + self.count_nodes(node.left) + self.count_nodes(node.right)
+
+    def compute_height(self, node):
+        if node is None:
+            return 0
+        left_height = self.compute_height(node.left)
+        right_height = self.compute_height(node.right)
+        return 1 + max(left_height, right_height)
+
+    def inorder(self, node, level=1):
+        if node:
+            self.max_level = max(self.max_level, level)
+            self.inorder(node.left, level + 1)
+            print(node.data, end=' ')
+            self.inorder(node.right, level + 1)
+
+    def preorder(self, node, level=1):
+        if node:
+            self.max_level = max(self.max_level, level)
+            print(node.data, end=' ')
+            self.preorder(node.left, level + 1)
+            self.preorder(node.right, level + 1)
+
+    def postorder(self, node, level=1):
+        if node:
+            self.max_level = max(self.max_level, level)
+            self.postorder(node.left, level + 1)
+            self.postorder(node.right, level + 1)
+            print(node.data, end=' ')
+
+def main():
+    bt = BinaryTree()
+    bt.make_tree()
+   
+    # Count nodes and height without printing traversal
+    total_nodes = bt.count_nodes(bt.root)
+    tree_height = bt.compute_height(bt.root)
+   
+    print("Total Number of Elements:", total_nodes)
+    print("Height of the Tree:", tree_height)
+    print()
+   
+    # Traversals
+    print("Inorder Traversal:")
+    bt.max_level = 0
+    bt.inorder(bt.root)
+    print(f"\nMax Recursive Level: {bt.max_level}\n")
+   
+    print("Preorder Traversal:")
+    bt.max_level = 0
+    bt.preorder(bt.root)
+    print(f"\nMax Recursive Level: {bt.max_level}\n")
+   
+    print("Postorder Traversal:")
+    bt.max_level = 0
+    bt.postorder(bt.root)
+    print(f"\nMax Recursive Level: {bt.max_level}")
+main()

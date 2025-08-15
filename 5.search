@@ -1,0 +1,98 @@
+import time
+
+def linear_search(arr, target_integer):
+    start_time = time.perf_counter()
+    for i in range(len(arr)):
+        if arr[i] == target_integer:
+            end_time = time.perf_counter()
+            return i, end_time - start_time
+    end_time = time.perf_counter()
+    return -1, end_time - start_time
+
+def binary_search_iterative(arr, target_integer):
+    start_time = time.perf_counter()
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target_integer:
+            end_time = time.perf_counter()
+            return mid, end_time - start_time
+        elif arr[mid] < target_integer:
+            low = mid + 1
+        else:
+            high = mid - 1
+    end_time = time.perf_counter()
+    return -1, end_time - start_time
+
+def binary_search_recursive(arr, low, high, target_integer):
+    start_time = time.perf_counter()
+    if high >= low:
+        mid = (high + low) // 2
+        if arr[mid] == target_integer:
+            end_time = time.perf_counter()
+            return mid, end_time - start_time
+        elif arr[mid] > target_integer:
+            return binary_search_recursive(arr, low, mid - 1, target_integer)
+        else:
+            return binary_search_recursive(arr, mid + 1, high, target_integer)
+    else:
+        end_time = time.perf_counter()
+        return -1, end_time - start_time
+
+def main():
+    try:
+        input_data_str = input("Enter integers separated by spaces: ")
+        # Convert the space-separated string of integers into a list of integers
+        integer_list = [int(num.strip()) for num in input_data_str.split(' ')]
+        integer_list.sort()
+
+        while True:
+            print("\nChoose a search method:")
+            print("1. Linear Search")
+            print("2. Binary Search (Iterative)")
+            print("3. Binary Search (Recursive)")
+            print("4. Exit")
+
+            choice = input("Enter your choice: ")
+
+            if choice in ['1', '2', '3']:
+                try:
+                    target_integer = int(input("Enter the integer to search: ").strip())
+                except ValueError:
+                    print("Invalid input. Please enter an integer.")
+                    continue
+
+                if choice == '1':
+                    index, exec_time = linear_search(integer_list, target_integer)
+                elif choice == '2':
+                    index, exec_time = binary_search_iterative(integer_list, target_integer)
+                else:
+                    index, exec_time = binary_search_recursive(integer_list, 0, len(integer_list) - 1, target_integer)
+
+                if index != -1:
+                    print(f"Integer {target_integer} found at index: {index}.")
+                    print(f"Execution time: {exec_time:.6f} seconds")
+                else:
+                    print(f"Integer {target_integer} not found.")
+                    print(f"Execution time: {exec_time:.6f} seconds")
+
+            elif choice == '4':
+                confirm = input("Are you sure you want to exit? Type 'yes' to confirm or 'no' to cancel: ").strip().lower()
+                if confirm == 'yes':
+                    print("Exiting program.")
+                    break
+                elif confirm == 'no':
+                    print("Exit cancelled. Returning to menu.")
+                else:
+                    print("Invalid input. Returning to menu.")
+
+            else:
+                print("Invalid choice. Please try again.")
+
+    except ValueError:
+        print("Invalid input format. Please ensure all inputs are valid integers.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+main()

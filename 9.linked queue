@@ -1,0 +1,120 @@
+class Node:
+    __slots__ = 'data', 'prev', 'next'
+
+    def __init__(self, data=None, prev=None, next=None):
+        self.data = data
+        self.prev = prev
+        self.next = next
+
+class DoublyLinkedBase:
+    __slots__ = 'head', 'tail', 'size'
+
+    def __init__(self):
+        self.head = Node()  # sentinel head
+        self.tail = Node()  # sentinel tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+
+    def is_empty(self):
+        return self.size == 0
+
+    def __len__(self):
+        return self.size
+
+    def insert_between(self, data, predecessor, successor):
+        new_node = Node(data, prev=predecessor, next=successor)
+        predecessor.next = new_node
+        successor.prev = new_node
+        self.size += 1
+        return new_node
+
+    def delete_node(self, node):
+        if self.is_empty():
+            return None
+        predecessor = node.prev
+        successor = node.next
+        predecessor.next = successor
+        successor.prev = predecessor
+        self.size -= 1
+        return node.data
+
+
+class LinkedQueue(DoublyLinkedBase):
+    def enqueue(self, data):
+        self.insert_between(data, self.tail.prev, self.tail)
+        self.display()
+
+    def dequeue(self):
+        if self.is_empty():
+            print("Queue is empty. Cannot dequeue.")
+        else:
+            value = self.delete_node(self.head.next)
+            print(f"Dequeued: {value}")
+            self.display()
+
+    def front(self):
+        if self.is_empty():
+            print("Queue is empty.")
+        else:
+            print("Front element:", self.head.next.data)
+
+    def rear(self):
+        if self.is_empty():
+            print("Queue is empty.")
+        else:
+            print("Rear element:", self.tail.prev.data)
+
+    def display(self):
+        current = self.head.next
+        elements = []
+        while current != self.tail:
+            elements.append(str(current.data))
+            current = current.next
+        print("Linked List: " + " ---> ".join(elements) + " ---> \u03c6")
+
+
+def main():
+    queue = LinkedQueue()
+
+    while True:
+        print("\nMenu:")
+        print("1. Enqueue")
+        print("2. Dequeue")
+        print("3. Front")
+        print("4. Rear")
+        print("5. Size")
+        print("6. Is Empty")
+        print("7. Exit")
+
+        choice = input("Enter your choice (1-7): ")
+
+        if choice == '1':
+            data = input("Enter data to enqueue: ").strip()
+            if data == "":
+                print("Empty input not allowed. Please enter valid data.")
+            else:
+                queue.enqueue(data)
+
+        elif choice == '2':
+            queue.dequeue()
+
+        elif choice == '3':
+            queue.front()
+
+        elif choice == '4':
+            queue.rear()
+
+        elif choice == '5':
+            print("Queue size:", len(queue))
+
+        elif choice == '6':
+            print("Queue is empty." if queue.is_empty() else "Queue is not empty.")
+
+        elif choice == '7':
+            print("Exiting program.")
+            break
+
+        else:
+            print("Invalid choice. Please enter a number between 1 and 7.")
+main()

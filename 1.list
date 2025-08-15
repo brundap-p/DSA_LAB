@@ -1,0 +1,138 @@
+def create(elements):
+    return elements
+
+def search(data_list, element):
+    if element in data_list:
+        return data_list.index(element)
+    return -1
+
+def insert(data_list, element, position):
+    if 0 <= position <= len(data_list):
+        data_list.insert(position, element)
+        print("Successfully inserted!")
+    else:
+        print("Invalid position for insertion.")
+    return data_list 
+
+def delete(data_list, element):
+    if element in data_list:
+        data_list.remove(element)
+        print("Successfully deleted!")
+    else:
+        print("Element not found for deletion.")
+    return data_list 
+
+def minimum(data_list):
+    if data_list:
+        return min(data_list)
+    return None
+
+def maximum(data_list):
+    if data_list:
+        return max(data_list)
+    return None
+
+def successor(data_list, element):
+    try:
+        index = data_list.index(element)
+        if index < len(data_list) - 1:
+            return data_list[index + 1]
+        return None
+    except ValueError:
+        return None
+
+def predecessor(data_list, element):
+    try:
+        index = data_list.index(element)
+        if index > 0:
+            return data_list[index - 1]
+        return None
+    except ValueError:
+        return None
+
+def display(data_list):
+    print(data_list)
+
+
+def main():
+    my_list = []
+
+    while True:
+        print("\nMenu:")
+        print("1. Create")
+        print("2. Search")
+        print("3. Insert")
+        print("4. Delete")
+        print("5. Minimum")
+        print("6. Maximum")
+        print("7. Successor")
+        print("8. Predecessor")
+        print("9. Display")
+        print("10. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            while True:
+                try:
+                    elements = list(map(float, input("Enter elements separated by space: ").split()))
+                    break
+                except ValueError:
+                    print("Invalid input. Please enter only float values.")
+            my_list = create(elements)
+            print("Successfully created!") # Added success message
+        elif choice == '2':
+            element = float(input("Enter element to search: "))
+            position = search(my_list, element)
+            if position != -1:
+                print("Element found at position:", position)
+            else:
+                print("Element not found.")
+        elif choice == '3':
+            element = float(input("Enter element to insert: "))
+            position = int(input("Enter position to insert: "))
+            my_list = insert(my_list, element, position)
+        elif choice == '4':
+            element = float(input("Enter element to delete: "))
+            my_list = delete(my_list, element)
+        elif choice == '5':
+            minimum_val = minimum(my_list)
+            if minimum_val is not None:
+                print("Minimum element:", minimum_val)
+            else:
+                print("List is empty.")
+        elif choice == '6':
+            maximum_val = maximum(my_list)
+            if maximum_val is not None:
+                print("Maximum element:", maximum_val)
+            else:
+                print("List is empty.")
+        elif choice == '7':
+            element = float(input("Enter element to find successor: "))
+            successor_val = successor(my_list, element)
+            if successor_val is not None:
+                print("Successor:", successor_val)
+            else:
+                print("Successor not found.")
+        elif choice == '8':
+            element = float(input("Enter element to find predecessor: "))
+            predecessor_val = predecessor(my_list, element)
+            if predecessor_val is not None:
+                print("Predecessor:", predecessor_val)
+            else:
+                print("Predecessor not found.")
+        elif choice == '9':
+            display(my_list)
+        elif choice == '10':
+            confirm = input("Are you sure you want to exit? Enter 'yes' to confirm, or 'no' to cancel: ").lower()
+            if confirm == 'yes':
+                print("Exiting the program")
+                break  # Exit the loop
+            elif confirm == 'no':
+                print("Exit cancelled. Returning to main menu.")
+                continue # Continue to the next iteration of the loop
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'.")
+        else:
+            print("Invalid choice.")
+main()
